@@ -21,15 +21,9 @@
     <ClCompile Include="graphics\window.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\window.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\window.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\window.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,6 +3,7 @@ namespace XPEngine {
 	namespace graphics {
 
 		void windowResize(GLFWwindow* window, int width, int height);
+		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 		Window::Window(const char *title, int width, int height)
 		{
@@ -47,6 +48,7 @@ namespace XPEngine {
 		void Window::update()
 		{			
 			glfwPollEvents();
+			glfwSetKeyCallback(_window, keyCallback);
 			glfwSwapBuffers(_window);
 		}
 
@@ -58,6 +60,11 @@ namespace XPEngine {
 		void windowResize(GLFWwindow *window, int width, int height) 
 		{
 			glViewport(0, 0, width, height);
+		}
+
+		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+		{
+			std::cout << "INPUT" << std::endl;
 		}
 	}
 }
