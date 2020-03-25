@@ -2,8 +2,10 @@
 namespace XPEngine {
 	namespace graphics {
 
-		void windowResize(GLFWwindow* window, int width, int height);
-		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		void window_Resize(GLFWwindow* window, int width, int height);
+		void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 
 		Window::Window(const char *title, int width, int height)
 		{
@@ -13,6 +15,14 @@ namespace XPEngine {
 
 			if (!init())
 				glfwTerminate();
+
+			for (int i = 0; i < MAX_KEYS; i++) {
+				_keys[i] = false;
+			}
+
+			for (int i = 0; i < MAX_BUTTONS; i++) {
+				_mouseButtons[i] = false;
+			}
 		}
 
 		Window::~Window()
@@ -36,8 +46,42 @@ namespace XPEngine {
 			}
 
 			glfwMakeContextCurrent(_window);
-			glfwSetWindowSizeCallback(_window, windowResize);
+			glfwSetWindowUserPointer(_window, this);
+			glfwSetWindowSizeCallback(_window, window_Resize);
+			glfwSetKeyCallback(_window, key_callback);
+			glfwSetMouseButtonCallback(_window, mouse_button_callback);
+			glfwSetCursorPosCallback(_window, cursor_position_callback);
+			
+			if (glewInit() != GLEW_OK) {
+				std::cout << "Could not initialize GLEW" << std::endl;
+				return false;
+			}
+
+			std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
+
 			return true;
+		}
+
+		bool Window::isKeyPressed(unsigned int keycode) const
+		{
+			if (keycode >= MAX_KEYS)
+				return false;
+
+			return _keys[keycode];
+		}
+
+		bool Window::isMouseButtonPressed(unsigned int button) const
+		{
+			if (button >= MAX_BUTTONS)
+				return false;
+
+			return _mouseButtons[button];
+		}
+
+		void Window::getMousePosition(double& x, double& y) const
+		{
+			x = _mx;
+			y = _my;
 		}
 
 		void Window::clear() const 
@@ -48,7 +92,6 @@ namespace XPEngine {
 		void Window::update()
 		{			
 			glfwPollEvents();
-			glfwSetKeyCallback(_window, keyCallback);
 			glfwSwapBuffers(_window);
 		}
 
@@ -57,14 +100,28 @@ namespace XPEngine {
 			return glfwWindowShouldClose(_window) == 1;
 		}
 
-		void windowResize(GLFWwindow *window, int width, int height) 
+		void window_Resize(GLFWwindow *window, int width, int height) 
 		{
 			glViewport(0, 0, width, height);
 		}
 
-		void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+		void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
-			std::cout << "INPUT" << std::endl;
+			Window* win = (Window*) glfwGetWindowUserPointer(window);
+			win->_keys[key] = action != GLFW_RELEASE;
+		}
+
+		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) 
+		{
+			Window* win = (Window*)glfwGetWindowUserPointer(window);
+			win->_mouseButtons[button] = action != GLFW_RELEASE;
+		}
+
+		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+		{
+			Window* win = (Window*)glfwGetWindowUserPointer(window);
+			win->_mx = xpos;
+			win->_my = ypos;
 		}
 	}
 }
