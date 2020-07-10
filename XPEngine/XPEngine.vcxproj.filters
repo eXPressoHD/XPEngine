@@ -26,5 +26,34 @@
     <ClInclude Include="graphics\window.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="res\shaders\Shader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="res\textures\Texture.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="res\camera\Camera.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="res\textures\Mesh.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\images\stormydays_bk.tga" />
+    <Image Include="res\images\stormydays_dn.tga" />
+    <Image Include="res\images\stormydays_ft.tga" />
+    <Image Include="res\images\stormydays_lf.tga" />
+    <Image Include="res\images\stormydays_rt.tga" />
+    <Image Include="res\images\stormydays_up.tga" />
+    <Image Include="res\images\container2.png">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\skybox.vs" />
+    <None Include="res\shaders\cube.vs" />
+    <None Include="res\shaders\skybox.frag" />
+    <None Include="res\shaders\cube.frag" />
   </ItemGroup>
 </Project>

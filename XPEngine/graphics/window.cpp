@@ -1,4 +1,7 @@
 #include "window.h"
+#include <time.h>
+#include "../res/camera/Camera.h"
+
 namespace XPEngine {
 	namespace graphics {
 
@@ -6,6 +9,9 @@ namespace XPEngine {
 		void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
+
+		int initial_time = time(NULL), final_time, frame_count = 0;
+
 
 		Window::Window(const char *title, int width, int height)
 		{
@@ -93,6 +99,15 @@ namespace XPEngine {
 		{			
 			glfwPollEvents();
 			glfwSwapBuffers(_window);
+
+			frame_count++;
+			final_time = time(NULL);
+			if (final_time - initial_time > 0) 
+			{
+				std::cout << "FPS: " << frame_count / (final_time - initial_time) << std::endl;
+				frame_count = 0;
+				initial_time = final_time;
+			}
 		}
 
 		bool Window::closed() const
@@ -109,6 +124,29 @@ namespace XPEngine {
 		{
 			Window* win = (Window*) glfwGetWindowUserPointer(window);
 			win->_keys[key] = action != GLFW_RELEASE;
+
+			const GLfloat rotationSpeed = 10;
+
+			// actions are GLFW_PRESS, GLFW_RELEASE or GLFW_REPEAT
+			if (action == GLFW_PRESS || action == GLFW_REPEAT)
+			{
+				switch (key)
+				{
+				case GLFW_KEY_UP:
+					win->_rotationX -= rotationSpeed;
+					break;
+				case GLFW_KEY_DOWN:
+					win->_rotationX += rotationSpeed;
+					break;
+				case GLFW_KEY_RIGHT:
+					win->_rotationY += rotationSpeed;
+					break;
+				case GLFW_KEY_LEFT:
+					win->_rotationY -= rotationSpeed;
+					break;
+				}
+				
+			}
 		}
 
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) 

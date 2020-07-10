@@ -16,6 +16,8 @@ namespace XPEngine {
 			int _width, _height;
 			GLFWwindow *_window;
 			bool _closed;
+			GLfloat _rotationX;
+			GLfloat _rotationY;
 
 			bool _keys[MAX_KEYS];
 			bool _mouseButtons[MAX_BUTTONS];
@@ -30,6 +32,10 @@ namespace XPEngine {
 
 			inline int getWidth() const { return _width; }
 			inline int getHeight() const { return _height; }
+
+			inline GLfloat getRotationX() const { return _rotationX; }
+			inline GLfloat getRotationY() const { return _rotationY; }
+
 
 			bool isKeyPressed(unsigned int keycode) const;
 			bool isMouseButtonPressed(unsigned int button) const;
